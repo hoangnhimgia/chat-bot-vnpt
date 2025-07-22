@@ -9,3 +9,5 @@ def tra_loi():
     question = request.json.get("question", "")
     answer = f"Bạn hỏi: '{question}' → Gà CSKH VNPT đang tìm hiểu để trả lời đúng chuẩn 😎"
     return jsonify({"answer": answer})
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
