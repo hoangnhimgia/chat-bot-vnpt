@@ -40,6 +40,7 @@ def search_drive_for_answer(question):
         return f"❌ Không khớp chính xác câu hỏi trong tài liệu. Bạn thử hỏi rõ hơn nhé 🐣📂"
 
 
+
 @app.route("/chat", methods=["POST"])
 def tra_loi():
     question = request.json.get("question", "")
