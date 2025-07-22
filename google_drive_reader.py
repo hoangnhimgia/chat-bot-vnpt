@@ -14,12 +14,15 @@ def list_files_in_folder(service, folder_id):
     return files
 def download_file(service, file_id, file_name):
     request = service.files().get_media(fileId=file_id)
-    with open(file_name, "wb") as fh:
-        downloader = MediaIoBaseDownload(fh, request)
-        done = False
-        while not done:
-            status, done = downloader.next_chunk()
-        print(f"✅ Đã tải: {file_name}")
+    fh = io.BytesIO()
+    downloader = MediaIoBaseDownload(fh, request)
+    done = False
+    while not done:
+        status, done = downloader.next_chunk()
+    with open(file_name, "wb") as f:
+        f.write(fh.getbuffer())
+    print(f"✅ Đã tải: {file_name}")
+
 def read_file_content(file_path):
     if file_path.endswith(".pdf"):
         import pdfplumber
