@@ -32,10 +32,10 @@ def search_drive_for_answer(question):
             print(f"❌ Lỗi khi xử lý file {file_name}: {e}")
 
     if not all_content:
-        return f"⏳ Gà chưa tìm được nội dung nào để tra. Kiểm tra lại file trong Drive nha 🐣📂"
+        return f"⏳ Nội dung không trùng khớp, kiểm tra lại file trong Drive nha 📂"
 
     if question.lower() in all_content.lower():
-        return f"✅ Có nội dung liên quan tới câu hỏi: '{question}' → Gà CSKH đang tra đúng văn bản nội bộ 🐣📂"
+        return f"✅ Có nội dung liên quan tới câu hỏi: '{question}' → Đúng văn bản nội bộ 🐣📂"
     else:
         return f"❌ Không khớp chính xác câu hỏi trong tài liệu. Bạn thử hỏi rõ hơn nhé 🐣📂"
 
