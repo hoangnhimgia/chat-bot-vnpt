@@ -32,4 +32,7 @@ def search_drive_for_answer(question):
     if results:
         return "\n\n".join(results)
     else:
-        return "⚠️ Gà chưa tìm được nội dung nào khớp câu hỏi trong các tài liệu hiện có. Bạn thử hỏi rõ hơn hoặc kiểm tra lại file Drive nha 🐣📂"
+        return "⚠️ Gà chưa tìm được nội dung nào khớp câu hỏi trong các tài liệu hiện có. Bạn thử hỏi rõ hơn hoặc kiểm tra lại file Drive nha 📂"
+        if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+
