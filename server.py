@@ -5,8 +5,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+
 def search_drive_for_answer(question):
     folder_id = "134xELd1joo7EtYiABV67BkuWKZAGmJiL"  # thay bằng mã folder Drive Bot-Tailieu
     service = init_drive_service()
@@ -31,3 +30,5 @@ def tra_loi():
     question = request.json.get("question", "")
     answer = search_drive_for_answer(question)
     return jsonify({"answer": answer})
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
