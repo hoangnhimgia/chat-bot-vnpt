@@ -24,6 +24,8 @@ def search_drive_for_answer(question):
         try:
             download_file(service, file_id, local_name)
             content = read_file_content(local_name)
+            print(f"📤 Nội dung đọc được từ PDF {file_name}:\n{content}")
+
             if content:
                 all_content += f"\n--- {file_name} ---\n{content}"
             else:
