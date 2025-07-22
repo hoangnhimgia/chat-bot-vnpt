@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 def search_drive_for_answer(question):
-    folder_id = "134xELd1joo7EtYiABV67BkuWKZAGmJiL"  # ID folder Bot-Tailieu từ Drive
+    folder_id = "134xELd1joo7EtYiABV67BkuWKZAGmJiL"
     service = init_drive_service()
     files = list_files_in_folder(service, folder_id)
 
@@ -26,10 +26,11 @@ def search_drive_for_answer(question):
             content = read_file_content(local_name)
             if content:
                 all_content += f"\n--- {file_name} ---\n{content}"
+            else:
+                print(f"⚠️ File rỗng hoặc không đọc được: {file_name}")
         except Exception as e:
-            print(f"Lỗi khi đọc file: {file_name} — {e}")
+            print(f"❌ Lỗi khi xử lý file {file_name}: {e}")
 
-    # Xử lý phản hồi demo (nâng cấp sau nếu cần embedding, semantic match...)
     if not all_content:
         return f"⏳ Gà chưa tìm được nội dung nào để tra. Kiểm tra lại file trong Drive nha 🐣📂"
 
@@ -37,6 +38,7 @@ def search_drive_for_answer(question):
         return f"✅ Có nội dung liên quan tới câu hỏi: '{question}' → Gà CSKH đang tra đúng văn bản nội bộ 🐣📂"
     else:
         return f"❌ Không khớp chính xác câu hỏi trong tài liệu. Bạn thử hỏi rõ hơn nhé 🐣📂"
+
 
 @app.route("/chat", methods=["POST"])
 def tra_loi():
