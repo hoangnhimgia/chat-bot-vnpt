@@ -2,7 +2,7 @@ import os
 from google_drive_reader import init_drive_service, list_files_in_folder, download_file, read_file_content
 
 def search_drive_for_answer(question):
-    folder_id = "134xELd1joo7EtYiABV67BkuWKZAGmJiL"  # Folder gốc Bot-Tailieu
+    folder_id = "134xELd1joo7EtYiABV67BkuWKZAGmJiL"
     service = init_drive_service()
     files = list_files_in_folder(service, folder_id)
 
