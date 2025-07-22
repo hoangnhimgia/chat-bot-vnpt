@@ -3,17 +3,16 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 
-def init_drive_service():
-    import os
+def import os
 import json
+import io
 from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseDownload
 
 def init_drive_service():
     info = json.loads(os.environ["GOOGLE_CREDENTIALS_JSON"])
     creds = service_account.Credentials.from_service_account_info(info)
-    service = build("drive", "v3", credentials=creds)
-    return service
-
     service = build("drive", "v3", credentials=creds)
     return service
 
