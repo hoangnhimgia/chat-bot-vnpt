@@ -19,9 +19,20 @@ def download_file(service, file_id, file_name):
     done = False
     while not done:
         status, done = downloader.next_chunk()
+    import io
+from googleapiclient.http import MediaIoBaseDownload
+
+def download_file(service, file_id, file_name):
+    request = service.files().get_media(fileId=file_id)
+    fh = io.BytesIO()  # Dùng vùng nhớ ảo để nhận dữ liệu
+    downloader = MediaIoBaseDownload(fh, request)
+    done = False
+    while not done:
+        status, done = downloader.next_chunk()
     with open(file_name, "wb") as f:
-        f.write(fh.getbuffer())
+        f.write(fh.getbuffer())  # Ghi dữ liệu ra file thực
     print(f"✅ Đã tải: {file_name}")
+
 
 def read_file_content(file_path):
     if file_path.endswith(".pdf"):
