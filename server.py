@@ -5,15 +5,10 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/chat", methods=["POST"])
-def tra_loi():
-    question = request.json.get("question", "")
-    answer = f"Bạn hỏi: '{question}' → Gà CSKH VNPT đang tìm hiểu để trả lời đúng chuẩn 😎"
-    return jsonify({"answer": answer})
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
 def search_drive_for_answer(question):
-    folder_id = "ID_FOLDER_CỦA_BẠN"  # thay bằng mã folder Drive Bot-Tailieu
+    folder_id = "134xELd1joo7EtYiABV67BkuWKZAGmJiL"  # thay bằng mã folder Drive Bot-Tailieu
     service = init_drive_service()
     files = list_files_in_folder(service, folder_id)
 
