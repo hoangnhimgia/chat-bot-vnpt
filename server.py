@@ -1,53 +1,35 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from google_drive_reader import (
-    init_drive_service,
-    list_files_in_folder,
-    download_file,
-    read_file_content
-)
-
-app = Flask(__name__)
-CORS(app)
+import os
+from google_drive_reader import init_drive_service, list_files_in_folder, download_file, read_file_content
 
 def search_drive_for_answer(question):
-    folder_id = "134xELd1joo7EtYiABV67BkuWKZAGmJiL"
+    folder_id = "134xELd1joo7EtYiABV67BkuWKZAGmJiL"  # Folder gốc Bot-Tailieu
     service = init_drive_service()
     files = list_files_in_folder(service, folder_id)
 
-    all_content = ""
+    results = []
+    q_lower = question.lower()
+
     for file in files:
         file_name = file['name']
         file_id = file['id']
-        local_name = f"temp_{file_name}"
+        local_path = f"temp_{file_name}"
 
         try:
-            download_file(service, file_id, local_name)
-            content = read_file_content(local_name)
-            print(f"📤 Nội dung đọc được từ PDF {file_name}:\n{content}")
+            download_file(service, file_id, local_path)
+            content = read_file_content(local_path)
+            if not content:
+                continue
 
-            if content:
-                all_content += f"\n--- {file_name} ---\n{content}"
-            else:
-                print(f"⚠️ File rỗng hoặc không đọc được: {file_name}")
+            content_lower = content.lower()
+            if q_lower in content_lower:
+                idx = content_lower.index(q_lower)
+                excerpt = content[max(0, idx - 300): idx + 300]
+                results.append(f"📄 **{file_name}**:\n{excerpt.strip()}")
+
         except Exception as e:
-            print(f"❌ Lỗi khi xử lý file {file_name}: {e}")
+            print(f"❌ Lỗi khi xử lý {file_name}: {e}")
 
-    if not all_content:
-        return f"⏳ Nội dung không trùng khớp, kiểm tra lại file trong Drive nha 📂"
-
-    if question.lower() in all_content.lower():
-        return f"✅ Có nội dung liên quan tới câu hỏi: '{question}' → Đúng văn bản nội bộ 🐣📂"
+    if results:
+        return "\n\n".join(results)
     else:
-        return f"❌ Không khớp chính xác câu hỏi trong tài liệu. Bạn thử hỏi rõ hơn nhé 🐣📂"
-
-
-
-@app.route("/chat", methods=["POST"])
-def tra_loi():
-    question = request.json.get("question", "")
-    answer = search_drive_for_answer(question)
-    return jsonify({"answer": answer})
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+        return "⚠️ Gà chưa tìm được nội dung nào khớp câu hỏi trong các tài liệu hiện có. Bạn thử hỏi rõ hơn hoặc kiểm tra lại file Drive nha 🐣📂"
