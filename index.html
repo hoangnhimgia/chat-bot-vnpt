@@ -1,29 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Trợ lý VNPT</title>
-  <style>
-    body { font-family: sans-serif; margin: 40px; }
-    textarea, button { font-size: 16px; margin-top: 10px; width: 100%; }
-    #answer { margin-top: 20px; background: #f0f0f0; padding: 15px; border-radius: 5px; }
-  </style>
+  <title>Trợ lý CSKH VNPT</title>
 </head>
 <body>
-  <h2>Gà hỏi - Trợ lý VNPT trả lời 🐣🤖</h2>
-  <textarea id="question" rows="4" placeholder="Nhập câu hỏi của bạn ở đây..."></textarea>
-  <button onclick="goiBot()">Hỏi trợ lý</button>
-  <div id="answer"></div>
+  <!-- Chat Widget -->
+  <div id="vnpt-chat-bot" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+    <button onclick="toggleChat()" style="background-color:#0068B7; color:white; border:none; padding:10px 20px; border-radius:50px; box-shadow:0 4px 6px rgba(0,0,0,0.2); cursor:pointer;">
+      🤖 Trợ lý CSKH
+    </button>
+    <div id="chat-box" style="display:none; width:300px; height:400px; background:white; border:1px solid #ccc; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); margin-top:10px; overflow:hidden;">
+      <div style="background:#0068B7; color:white; padding:10px; text-align:center;">
+        Xin chào 👋 Tôi là Trợ lý CSKH VNPT Thủ Đức. Bạn cần hỗ trợ gì hôm nay ạ?
+      </div>
+      <div id="chat-content" style="padding:10px; height:280px; overflow-y:auto; font-size:14px;"></div>
+      <div style="padding:10px;">
+        <input id="user-input" type="text" placeholder="Nhập câu hỏi tại đây..." style="width:100%; padding:8px; border-radius:5px; border:1px solid #ccc;">
+        <button onclick="sendQuestion()" style="margin-top:5px; width:100%; background:#0068B7; color:white; border:none; padding:8px; border-radius:5px;">Gửi</button>
+      </div>
+    </div>
+  </div>
 
   <script>
-    async function goiBot() {
-      const q = document.getElementById("question").value;
-      const res = await fetch("https://chat-bot-vnpt.onrender.com/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q })
-      });
-      const data = await res.json();
-      document.getElementById("answer").innerText = data.answer || "Không có câu trả lời.";
+    function toggleChat() {
+      const chatBox = document.getElementById("chat-box");
+      chatBox.style.display = chatBox.style.display === "none" ? "block" : "none";
+    }
+
+    async function sendQuestion() {
+      const input = document.getElementById("user-input").value;
+      if (!input) return;
+      const content = document.getElementById("chat-content");
+      content.innerHTML += `<div><strong>Bạn:</strong> ${input}</div>`;
+
+      try {
+        const res = await fetch("https://chat-bot-vnpt.onrender.com/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: input }),
+        });
+        const data = await res.json();
+        content.innerHTML += `<div><strong>Bot:</strong> ${data.answer}</div>`;
+      } catch (error) {
+        content.innerHTML += `<div><strong>Bot:</strong> ⚠️ Gà đang gặp sự cố: ${error.message}</div>`;
+      }
+      document.getElementById("user-input").value = "";
     }
   </script>
 </body>
