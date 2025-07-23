@@ -1,4 +1,9 @@
 import os
+from flask import Flask, request, jsonify
+from google_drive_reader import init_drive_service, list_files_in_folder, download_file, read_file_content
+
+app = Flask(__name__)  # ✅ Dòng này là “trái tim” Flask cần có
+
 from google_drive_reader import init_drive_service, list_files_in_folder, download_file, read_file_content
 
 def search_drive_for_answer(question):
